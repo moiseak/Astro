@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import BlogPost from "../components/BlogPost.astro";
 
 const allPosts = Object.values(
   import.meta.glob("./posts/*.md", { eager: true })
@@ -13,9 +14,7 @@ const pageTitle = "我的博客";
   <ul>
     {
       allPosts.map((post: any) => (
-        <li>
-          <a href={post.url}>{post.frontmatter.title}</a>
-        </li>
+        <BlogPost title={post.frontmatter.title} url = {post.url}/>
       ))
     }
   </ul>
