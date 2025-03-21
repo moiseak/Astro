@@ -13,7 +13,7 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<BaseLayout title="思考">
+<BaseLayout pageTitle="思考">
   <section class="posts">
     {page.data.map((post: { url: string; frontmatter: { title: string; pubDate: string; type?: string } }) => (
       <article class="post-preview">
