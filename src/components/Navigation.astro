@@ -3,8 +3,91 @@
 ---
 
 <div class="nav-links">
-  <a href="/">首页</a>
-  <a href="/about/">关于</a>
-  <a href="/blog/">博客</a>
-  <a href="/tags/">标签</a>
+  <a href="/">主页</a>
+  <a href="/thinking/">思考</a>
+  <div class="dropdown">
+    <a href="/programming/">编程</a>
+    <div class="dropdown-content">
+      <a href="/programming/algorithm/">算法</a>
+      <a href="/programming/interview/">面经</a>
+    </div>
+  </div>
+  <a href="/friends/">友链</a>
 </div>
+
+<style>
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.8);  /* 更白的背景 */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .dropdown-content {
+    background-color: rgba(255, 255, 255, 0.95);  /* 与导航栏背景相配 */
+    /* 其他样式保持不变 */
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 500;
+    font-size: 1.1rem;
+    position: relative;
+    padding: 0.5rem 1rem;  /* 增加左右内边距 */
+    border-radius: 6px;    /* 添加圆角 */
+    transition: all 0.3s ease;  /* 添加过渡效果 */
+  }
+
+  /* 删除原来的下划线效果 */
+  .nav-links a:hover {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.05);  /* 淡蓝色背景 */
+  }
+
+  /* 删除原来的 a::after 相关样式 */
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+  
+    .dropdown-content {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      background-color: rgba(248, 250, 252, 0.98);
+      min-width: 180px;
+      box-shadow: 0 4px 12px rgba(148, 163, 184, 0.15);
+      z-index: 1;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+      transform: translateY(-10px);
+      backdrop-filter: blur(10px);
+    }
+  
+    .dropdown:hover .dropdown-content {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  
+    .dropdown-content a {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+  
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+  .dropdown-content a:hover {
+    background-color: rgba(59, 130, 246, 0.05);  /* 淡蓝色悬停效果 */
+  }
+</style>

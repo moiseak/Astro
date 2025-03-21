@@ -4,37 +4,42 @@ const { frontmatter } = Astro.props;
 ---
 
 <BaseLayout pageTitle={frontmatter.title}>
-  <p>{frontmatter.pubDate.toString().slice(0, 10)}</p>
-  <p><em>{frontmatter.description}</em></p>
-  <p>作者：{frontmatter.author}</p>
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
-  <div class="tags">
-    {
-      frontmatter.tags.map((tag: string) => (
-        <p class="tag">
-          <a href={`/tags/${tag}`}>{tag}</a>
-        </p>
-      ))
-    }
-  </div>
-  <slot />
+  <article class="post-content">
+    <div class="post-meta">
+      <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
+      <p><em>{frontmatter.description}</em></p>
+    </div>
+    <div class="content">
+      <slot />
+    </div>
+  </article>
 </BaseLayout>
+
 <style>
-  a {
-    color: #00539f;
+  .post-content {
+    max-width: 85ch;
+    margin: 0 auto;
+    padding: 2rem;  
+    font-size: 1.2rem;  /* 设置基础字体大小 */
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
+  .content {
+    line-height: 1.8;         /* 增加行高 */
+    letter-spacing: 0.05em;   /* 增加字间距 */
+    word-spacing: 0.1em;      /* 增加词间距 */
   }
 
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: 0.5em;
-    padding: 0.5em 1em;
-    font-size: 1.15em;
-    background-color: #f8fcfd;
+  .content :global(p) {
+    margin-bottom: 1.2em;     /* 段落间距 */
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-meta {
+    color: #666;
+    margin-bottom: 2rem;
   }
 </style>

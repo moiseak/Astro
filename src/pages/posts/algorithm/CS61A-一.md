@@ -1,0 +1,273 @@
+---
+
+layout: '/src/layouts/MarkdownPostLayout.astro'
+title: "CS61A #1"  
+description: "递归"  
+pubDate: 2024-09-27   
+type: "summary" 
+---
+# Recursive Leap of Faith
+
+> 若要让我回忆在CS61A-Python部分最印象深刻的知识是什么, 那一定是 Recursive Leap of Faith . 我至今仍清楚的记得那个下午我用List Comprehensions and Tree Recursion随手用两行代码就解决一个问题后, 回过神来: "我也...变得稍微有点厉害了吧."
+
+***请确保你已经有Python关于Functions, Control, Sequences and OOP的基础知识***
+
+## 入门
+
+为什么叫做"信仰之跃"? 我认为是: *信任你的递归函数, 你让它做什么, 它就一定会做到, 无论过程如何.*
+
+举个简单的例子:
+### 1.`sum_digits`
+现在要求编写一个计算一个正整数所有位上的数字的和, 比如123所有位的和就是1+2+3=6.
+
+**那现在想一想, 你希望你编写的函数做到什么?**
+
+我们直接定义我们编写的函数能够计算一个正整数所有位上的数字的和, 但肯定不能直接把这个正整数放进去, 所以一个很自然的想法出现了:
+**用我们定义的函数计算前面n-1位数字的和再加上最后一位不就可以了:**
+```python
+sum_digits(all_but_last) + last
+```
+
+但我们很轻易就能发现这里还有一种**特殊情况**: 当这个正整数是个位数的时候, 不需要计算, 直接返回就可以了.
+于是我们可以把完整的代码写出来了:
+```python
+def sum_digits(n):
+    """Return the sum of the digits of positive integer n."""
+    if n < 10:                                      #特殊情况
+        return n
+    else:
+        all_but_last, last = n // 10, n % 10
+        return sum_digits(all_but_last) + last      #不用担心sum_digits(all_but_last)怎么得到答案, 这就是它的定义
+```
+
+***如果你干过用人脑压栈的蠢事, 对这个方法的感触会更深***
+
+继续:
+### 2.`double_eights`
+编写一个函数判断一个正整数是否含两个有相邻的数字'8', 如88, 1889, 1881111都`return True`.
+
+同样地相信我们的函数, 第一步可以先判断个位和十位有没有连续的'8', 如果有直接`return True`, 如果没有, 个位就被排除了.
+我们又注意到如果这个正整数只有两位数, 那么我们判断完个位和十位不符合条件后就可以直接`return False`了.
+接下来就可以用我们定义的函数, 来判断除了最后一位的前n-1位有没有相邻的'8'.
+通过上面的思考, 翻译成Python完整代码如下:
+```python
+def double_eights(n):
+    last, second_last = n % 10, n // 10 % 10    
+    if last == 8 and second_last == 8:              #判断个位和十位
+        return True
+    elif n < 100:                                   #两位数不符合上述条件直接返回, 不进递归
+        return False
+    return double_eights(n // 10)                   #个位被排除了
+```
+
+通过上面两个例子, 我们可以稍微总结一下了, 写递归函数一般由三部分组成:
+**1. Base case(s), 即特殊情况(可能不止一个).**
+**2. Recursive call, 即递归调用.**
+**3. Recombination, 即对递归结果的使用.**
+
+**同时, 我们对这个所谓的"特殊情况"可以再讨论一下, 它是否可以看作递归的截止条件? 满足该条件即结束本层递归, 返回上层递归.**
+
+## 初级
+
+***请尽量先自己想一想***
+
+### 3.`make_onion`
+编写一个函数`make_onion`, 该函数接受两个单参数函数 f 和 g. 它`return`一个函数`can_reach`, 该函数接受：x、y 和 limit三个参数.
+如果可以使用最多 limit 次对函数 f 和 g 的调用从 x 到达 y，则`return True`，否则`return False`.
+例如，如果调用 f 值就加 1 ,调用 g 值就加倍，则可以通过四次调用从 5 到达 25：`f(g(g(f(5))))`. 即`can_reach(5, 25, 4)` `return True`.
+因为有两个函数, 所以用or代表两个方向, 任何一个方向成功就返回True, 同时注意我们调用了一次 f or g ,所以limit次数记得减一.
+    
+*一个函数不直接返回答案, 而是返回另一个函数来辅助得到答案, 那么这个返回函数就叫做辅助函数.*
+
+```python
+def make_onion(f, g):
+    """Return a function can_reach(x, y, limit) that returns
+    whether some call expression containing only f, g, and x with
+    up to limit calls will give the result y."""
+
+    def can_reach(x, y, limit):
+        if limit < 0:
+            return False
+        elif x == y:
+            return True                 #两个 base cases.
+        else:
+            return can_reach(f(x), y, limit - 1) or can_reach(g(x), y, limit - 1)
+    return can_reach
+```
+
+### 4.`count_partitions`
+给定正整数 n 和部分最大大小 m，n 的划分数是将 n 表示为不超过 m 的正整数部分的和的方式数目，每种和按递增顺序排列。
+
+例子：使用不超过 4 的部分划分 6 的方式有 9 种：
+
+6 = 2 + 4
+6 = 1 + 1 + 4
+6 = 3 + 3
+6 = 1 + 2 + 3
+6 = 1 + 1 + 1 + 3
+6 = 2 + 2 + 2
+6 = 1 + 1 + 2 + 2
+6 = 1 + 1 + 1 + 1 + 2
+6 = 1 + 1 + 1 + 1 + 1 + 1
+
+定义函数 `count_partitions(n, m)`，返回使用不超过 m 的部分划分 n 的不同方式数目。
+
+我们要划分一个数 n，且划分中的每个部分都不超过 m。这个问题可以通过递归思想分成两种情况来考虑：
+
+1. 包含至少一个 m：
+   在这种情况下，划分中有一部分是 m。
+   由于已经使用了一个 m，剩下的部分实际上是在划分 n - m 的问题，并且这些部分仍然不能超过 m。
+   例如，如果我们要划分 6，且最大部分为 4，则可以先取出一个 4，剩下的问题就是划分 6 - 4 = 2，且部分最大为 4。
+   因此，划分 n 使用不超过 m 的部分，其中包含 m 的情况，相当于 划分 n - m 使用不超过 m 的方式数。
+
+2. 不包含 m：
+   在这种情况下，划分中的所有部分都必须小于 m，这意味着我们是在划分 n，使用的部分最大只能是 m - 1。
+   例如，划分 6，且不包含 4，意味着最大部分只能是 3 或更小。所以这相当于“划分 6，且最大部分为 3”的问题。
+   因此，划分 n 使用不超过 m 的部分，其中不包含 m 的情况相当于 划分 n 使用不超过 m - 1 的方式数。
+
+```python
+count_partitions(n, m) = count_partitions(n - m, m) + count_partitions(n, m - 1)
+```
+
+*Base cases是什么?*
+
+划分 0 的方式只有一种：不包含任何部分；
+对负数 n 划分的方式为 0；
+对 n > 0 使用大小为 0 或更小的部分划分的方式为 0。
+
+实现如下:
+```python
+def count_partitions(n, m):
+    """Count the ways to partition n using parts up to m."""
+    if n == 0:
+        return 1
+    elif n < 0:
+        return 0
+    elif m == 0:
+        return 0
+    else:
+        return count_partitions(n-m, m) + count_partitions(n, m-1)
+```
+
+
+*下面会涉及几种数据结构, 如果你需要复习,[请点击](https://www.composingprograms.com/pages/23-sequences.html)*
+
+## 中级
+### 5.`berry_finder`
+校园里的松鼠需要你的帮助！校园里有很多树，松鼠想知道哪些树上有浆果。定义一个名为`berry_finder`的函数，该函数接收一棵树作为输入，如果树中有一个节点的值为 'berry'，则返回 True，否则返回 False.
+
+回忆一下我们上面讲到的.对于一棵树, 由于它的分支是一个列表, 所以我们有特殊的递归使用:
+```python
+for b in branches(t):
+    berry_finder(b)
+```
+那么这道题, 我们对每个子树分别进行搜索就能得到答案了:
+```python
+if label(t) == 'berry':                     #不要忘记检查label, 同时这个语句也是递归的截止条件
+        return True
+    for b in branches(t):                   #遍历子树
+        if berry_finder(b):                 #判断每个子树是否符合条件
+            return True
+    return False
+```
+
+### 6.`max_path_sum`
+编写一个函数，接收一棵树作为输入，并返回从树根到任意叶节点路径上节点值的最大和。根到叶节点的路径是指从根节点开始，经过一系列节点到达某个叶节点的节点序列。可以假设树中的所有节点标签都是正数。
+
+寻找最大和可以使用`max`函数, 参数为各个子树的最大和.
+同样的, 对于这种树的题目我们可以直接把子树全塞我们定义的函数中, 再加上base cases:
+```python
+def max_path_sum(t):
+    """Return the maximum root-to-leaf path sum of a tree.
+    >>> t = tree(1, [tree(5, [tree(1), tree(3)]), tree(10)])
+    >>> max_path_sum(t) # 1, 10
+    11
+    >>> t2 = tree(5, [tree(4, [tree(1), tree(3)]), tree(2, [tree(10), tree(3)])])
+    >>> max_path_sum(t2) # 5, 2, 10
+    17
+    """
+    # Non-list comprehension solution
+    if is_leaf(t):
+        return label(t)
+    highest_sum = 0
+    for b in branches(t):
+        highest_sum = max(max_path_sum(b), highest_sum)
+    return label(t) + highest_sum
+
+    # List comprehension solution
+    if is_leaf(t):
+      return label(t)
+    else:
+      return label(t) + max([max_path_sum(b) for b in branches(t)])
+```
+### 7.`add_d_leaves`
+实现`add_d_leaves`函数，该函数接收一个 Tree 实例 t 和一个数字 v。
+我们定义树 t 中某个节点的深度为从根节点到该节点之间边的数量。因此，根节点的深度为 0。
+对于树中的每个节点，你应该根据节点的深度 d 添加 d 个叶子节点。每个添加的叶子节点的标签都应该为 v。如果某个节点已经有了分支，应该将这些叶子添加到分支列表的末尾。
+例如，你需要在深度为 1 的每个节点上添加 1 个标签为 v 的叶子，在深度为 2 的每个节点上添加 2 个标签为 v 的叶子，依此类推。
+
+同样的遍历每个子树, 并且对每个子树都进行添加叶子.
+函数里面我们要让他干什么呢? 根据节点的深度来添加叶子, 所以我们还需要一个辅助函数来记录节点的深度.
+```python
+t.branches.extend([Tree(v) for _ in range(d)])
+```
+```python
+for b in t.branches:
+    add_leaves(b, d + 1)
+```
+还要注意我们要在遍历之后再添加叶子, 否则后面的遍历会把新加入的叶子一起遍历, 这不符合我们的要求
+结合:
+```python
+def add_d_leaves(t, v):
+    """Add d leaves containing v to each node at every depth d."""
+    def add_leaves(t, d):
+        for b in t.branches:
+            add_leaves(b, d + 1)
+        t.branches.extend([Tree(v) for _ in range(d)]) 
+    add_leaves(t, 0)
+```
+
+### 8.`level_mutation_link`
+给定一棵树 t 和一个由单参数函数组成的链表 funcs，编写一个函数，通过使用 funcs 中对应深度的函数，修改树 t 中各节点的标签。例如：
+根节点（深度 0）的标签将使用 funcs 中深度 0 对应的函数来修改（即 funcs.first）。
+树中第一层的节点标签将使用 funcs 中深度 1 对应的函数来修改（即 funcs.rest.first），依此类推。
+funcs 中的每个函数都会接收一个标签值，并返回一个有效的标签值。
+如果一个节点是叶节点，并且 funcs 中还有未使用的函数，这些剩余的函数应该按顺序依次应用于叶节点的标签。如果 funcs 为空，则树应保持不变。
+请参考 doctests 示例进行理解。
+```python
+def level_mutation_link(t, funcs):
+	"""Mutates t using the functions in the linked list funcs.
+
+	>>> t = Tree(1, [Tree(2, [Tree(3)])])
+	>>> funcs = Link(lambda x: x + 1, Link(lambda y: y * 5, Link(lambda z: z ** 2)))
+	>>> level_mutation_link(t, funcs)
+	>>> t    # At level 0, apply x + 1; at level 1, apply y * 5; at level 2 (leaf), apply z ** 2
+	Tree(2, [Tree(10, [Tree(9)])])
+	>>> t2 = Tree(1, [Tree(2), Tree(3, [Tree(4)])])
+	>>> level_mutation_link(t2, funcs)
+	>>> t2    # Level 0: 1+1=2; Level 1: 2*5=10 => 10**2 = 100, 3*5=15; Level 2 (leaf): 4**2=16
+	Tree(2, [Tree(100), Tree(15, [Tree(16)])])
+	>>> t3 = Tree(1, [Tree(2)])
+	>>> level_mutation_link(t3, funcs)
+	>>> t3    # Level 0: 1+1=2; Level 1: 2*5=10; no further levels, so apply remaining z ** 2: 10**2=100
+	Tree(2, [Tree(100)])
+	"""
+	if funcs is Link.empty:                         #为空链表则直接返回
+		return
+	t.label = funcs.first(t.label)
+	remaining = funcs.rest
+	if t.is_leaf() and remaining is not Link.empty:         #剩余的函数全部应用
+		while remaining is not Link.empty:
+			t.label = remaining.first(t.label)
+			remaining = remaining.rest
+	for b in t.branches:                                #正常遍历
+		level_mutation_link(b, remaining)
+```
+
+
+参考资料:
+[1]: https://www.composingprograms.com/
+[2]: https://cs61a.org/
+[3]: https://composingprograms.netlify.app/
+[4]: https://www.youtube.com/watch?v=31EDjrN1x5k&list=PL6BsET-8jgYUUBHIgUAqjrMUoPCGQcYdl
+[5]: https://www.youtube.com/watch?v=sflkoII6Sgs&list=PLx38hZJ5RLZfbxxUweflX7WTodft__azP&index=2

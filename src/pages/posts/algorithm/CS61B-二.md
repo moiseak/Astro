@@ -1,0 +1,410 @@
+---
+layout: '/src/layouts/MarkdownPostLayout.astro'
+title: "CS61B #2"  
+description: "手写链表/数组"  
+pubDate: 2024-10-15   
+type: "Project" 
+---
+这个proj还是有难度的,不过一个proj就能融合Java的大部分知识,很值得一做.
+
+# deque
+
+## LinkedListDeque
+注意sentinel的使用,目的是避免链表为空.
+```Java
+package deque;
+
+import java.util.Iterator;
+
+/**
+ * @author Moiads
+ */
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
+    private final ListNode<T> sentinel;
+    private int size;
+
+    private static class ListNode<T> {
+        T val;
+        ListNode<T> next;
+        ListNode<T> prev;
+
+        ListNode(T x) {
+            val = x;
+            next = null;
+            prev = null;
+        }
+    }
+
+    public LinkedListDeque() {
+        sentinel = new ListNode<>(null);
+        sentinel.next = sentinel;
+        sentinel.prev = sentinel;
+        size = 0;
+    }
+
+    private class LinkedListIterator implements Iterator<T> {
+        private ListNode<T> current;
+
+        LinkedListIterator() {
+            current = sentinel;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current.next.val != null;
+        }
+
+        @Override
+        public T next() {
+            T ret = current.next.val;
+            current = current.next;
+            return ret;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListIterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Deque) {
+            Deque<T> other = (Deque<T>) o;
+            if (this.size() != other.size()) {
+                return false;
+            }
+            for (int i = 0; i < size(); i++) {
+                if (!(this.get(i).equals(other.get(i)))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void addFirst(T x) {
+        ListNode<T> newNode = new ListNode<>(x);
+        sentinel.next.prev = newNode;
+        newNode.next = sentinel.next;
+        sentinel.next = newNode;
+        newNode.prev = sentinel;
+        size += 1;
+    }
+
+    @Override
+    public void addLast(T x) {
+        ListNode<T> newNode = new ListNode<>(x);
+        sentinel.prev.next = newNode;
+        newNode.prev = sentinel.prev;
+        sentinel.prev = newNode;
+        newNode.next = sentinel;
+        size += 1;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public void printDeque() {
+        ListNode<T> current = sentinel.next;
+        while (current != sentinel) {
+            System.out.print(current.val + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    @Override
+    public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
+        T removeValue = sentinel.next.val;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
+        size -= 1;
+        return removeValue;
+    }
+
+    @Override
+    public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
+        T removeValue = sentinel.prev.val;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
+        size -= 1;
+        return removeValue;
+    }
+
+    @Override
+    public T get(int index) {
+        ListNode<T> current = sentinel.next;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.val;
+    }
+
+    public T getRecursive(int index) {
+        return getRecursiveHelper(sentinel.next, index);
+    }
+
+    private T getRecursiveHelper(ListNode<T> node, int index) {
+        if (index == 0) {
+            return node.val;
+        } else {
+            return getRecursiveHelper(node.next, index - 1);
+        }
+    }
+
+}
+
+```
+
+## ArrayDeque
+难点是循环数组的实现以及resize.
+```Java
+package deque;
+
+import java.util.Iterator;
+
+/**
+ * @author Moiads
+ */
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
+    private T[] array;
+    private int size;
+    private int nextlast;
+    private int nextfirst;
+
+    public ArrayDeque() {
+        array = (T[]) new Object[8];
+        size = 0;
+        nextlast = 1;
+        nextfirst = 0;
+    }
+
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int current;
+
+        ArrayDequeIterator() {
+            current = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current < size();
+        }
+
+        @Override
+        public T next() {
+            T returnValue = get(current);
+            current++;
+            return returnValue;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Deque) {
+            Deque<T> other = (Deque<T>) o;
+            if (this.size() != other.size()) {
+                return false;
+            }
+            for (int i = 0; i < size(); i++) {
+                if (!(this.get(i).equals(other.get(i)))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    private T[] resize(int newSize) {
+        T[] newArray = (T[]) new Object[newSize];
+        for (int i = 0; i < size; i++) {
+            newArray[i] = get(i);
+        }
+        nextfirst = newArray.length - 1;
+        nextlast = size;
+        return newArray;
+    }
+
+    @Override
+    public void addFirst(T item) {
+        if (size == array.length) {
+            array = resize(size * 2);
+        }
+        array[nextfirst] = item;
+        nextfirst = (nextfirst - 1 + array.length) % array.length;
+        size++;
+    }
+
+    @Override
+    public void addLast(T item) {
+        if (size == array.length) {
+            array = resize(size * 2);
+        }
+        array[nextlast] = item;
+        nextlast = (nextlast + 1) % array.length;
+        size++;
+    }
+
+    @Override
+    public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
+        if (size < array.length / 4 && size > 8) {
+            array = resize(array.length / 2);
+        }
+        size--;
+        nextfirst = (nextfirst + 1) % array.length;
+        T temp = array[nextfirst];
+        array[nextfirst] = null;
+        return temp;
+    }
+
+    @Override
+    public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
+        if (size < array.length / 4 && size > 8) {
+            array = resize(array.length / 2);
+        }
+        size--;
+        nextlast = (nextlast - 1 + array.length) % array.length;
+        T temp = array[nextlast];
+        array[nextlast] = null;
+        return temp;
+    }
+
+    @Override
+    public T get(int index) {
+        int in = (nextfirst + 1 + index) % array.length;
+        return array[in];
+    }
+
+    @Override
+    public void printDeque() {
+        for (int i = 0; i < size(); i++) {
+            System.out.print(get(i) + " ");
+        }
+        System.out.println();
+    }
+}
+
+```
+
+## Deque
+```Java
+package deque;
+
+/**
+ * @author Moiads
+ */
+public interface Deque<T> {
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
+    int size();
+
+    void addFirst(T element);
+
+    void addLast(T element);
+
+    T removeFirst();
+
+    T removeLast();
+
+    T get(int index);
+
+    void printDeque();
+}
+
+```
+
+# gh2
+
+## GuitarString
+这个比较简单,根据需求直接应用我们刚刚写的数据结构.
+```Java
+package gh2;
+
+import deque.ArrayDeque;
+import deque.Deque;
+
+/**
+ * @author Moiads
+ */
+//Note: This file will not compile until you complete the Deque implementations
+public class GuitarString {
+    /**
+     * Constants. Do not change. In case you're curious, the keyword final
+     * means the values cannot be changed at runtime. We'll discuss this and
+     * other topics in lecture on Friday.
+     */
+    // Sampling Rate
+    private static final int SR = 44100;
+    // energy decay factor
+    private static final double DECAY = .996;
+
+    /* Buffer for storing sound data. */
+
+    private final Deque<Double> buffer;
+
+    /* Create a guitar string of the given frequency.  */
+    public GuitarString(double frequency) {
+        int capacity = (int) Math.round(SR / frequency);
+        buffer = new ArrayDeque<>();
+        for (int i = 0; i < capacity; i++) {
+            buffer.addFirst(0.0);
+        }
+    }
+
+
+    /* Pluck the guitar string by replacing the buffer with white noise. */
+    public void pluck() {
+        for (int i = 0; i < buffer.size(); i++) {
+            buffer.removeFirst();
+            double r = Math.random() - 0.5;
+            buffer.addLast(r);
+        }
+    }
+
+    /* Advance the simulation one time step by performing one iteration of
+     * the Karplus-Strong algorithm.
+     */
+    public void tic() {
+        double result = buffer.removeFirst();
+        result = 0.5 * (result + buffer.get(0)) * DECAY;
+        buffer.addLast(result);
+    }
+
+    /* Return the double at the front of the buffer. */
+    public double sample() {
+        return buffer.get(0);
+    }
+}
+
+```

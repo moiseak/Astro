@@ -1,0 +1,133 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+// 动态获取所有文章
+const posts = await Promise.all(
+  Object.values(
+    import.meta.glob("/src/pages/posts/algorithm/*.md", { eager: true }),
+  ),
+);
+// 按发布日期排序
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.frontmatter.pubDate);
+  const dateB = new Date(b.frontmatter.pubDate);
+  return dateB.getTime() - dateA.getTime();
+});
+
+// 分页设置
+const postsPerPage = 7;
+const currentPage = Number(Astro.params.page || "1");
+const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+const pageStart = (currentPage - 1) * postsPerPage;
+const pageEnd = pageStart + postsPerPage;
+const currentPosts = sortedPosts.slice(pageStart, pageEnd);
+---
+
+<BaseLayout title="算法">
+  <section class="posts">
+    {
+      currentPosts.map((post) => (
+        <article class="post-preview">
+          <h2>
+            <a href={post.url}>{post.frontmatter.title}</a>
+          </h2>
+          <div class="post-meta">
+            <time>
+              {new Date(post.frontmatter.pubDate).toLocaleDateString()}
+            </time>
+            {/* {post.frontmatter.description && (
+              <span class="description">{post.frontmatter.description}</span>
+            )} */}
+            {post.frontmatter.type && (
+              <span class="type">{post.frontmatter.type}</span>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <nav class="pagination">
+    {
+      currentPage > 1 && (
+        <a href={`/programming/algorithm/page/${currentPage - 1}`} class="prev">
+          上一页
+        </a>
+      )
+    }
+    <span class="current">第 {currentPage} 页 / 共 {totalPages} 页</span>
+    {
+      currentPage < totalPages && (
+        <a href={`/programming/algorithm/page/${currentPage + 1}`} class="next">
+          下一页
+        </a>
+      )
+    }
+  </nav>
+</BaseLayout>
+
+<style>
+  .posts {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .post-preview {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  .type {
+    margin-left: 1rem;
+    padding: 0.2rem 0.5rem;
+    background: #f0f0f0;
+    border-radius: 4px;
+  }
+
+  .post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .description {
+    color: #666;
+    font-style: italic;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a:hover {
+    color: #3b82f6;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  .pagination a {
+    padding: 0.5rem 1rem;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .pagination a:hover {
+    background: rgba(59, 130, 246, 0.05);
+  }
+
+  .current {
+    color: #666;
+  }
+</style>
