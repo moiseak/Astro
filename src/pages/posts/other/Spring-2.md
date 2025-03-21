@@ -1,13 +1,9 @@
 ---
-title: Spring（二）
-categories:
-  - 学习笔记
-tags:
-  - Java
-  - Spring
-excerpt: AOP
-abbrlink: 2d3a27c0
-date: 2024-11-23 18:35:33
+layout: '/src/layouts/MarkdownPostLayout.astro'
+title: "Spring #2"  
+description: "AOP"  
+pubDate: 2024-11-23   
+type: "summary" 
 ---
 # AOP
 ## 概念

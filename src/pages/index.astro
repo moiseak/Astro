@@ -1,7 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Greeting from "../components/Greeting";
-
 const pageTitle = "你好";
 ---
 
@@ -12,9 +10,9 @@ const pageTitle = "你好";
   <h3>最新文章</h3>
   <ul>
     {
-      (await Astro.glob('./posts/{algorithm,interview,thinking}/*.{md,mdx}')).sort(
-
-        (a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime()
+      (await Astro.glob('./posts/**/**/*.{md,mdx}')).sort(
+        (a, b) => new Date(b.frontmatter.pubDate).getTime() 
+        - new Date(a.frontmatter.pubDate).getTime()
       ).slice(0, 5).map(post => (
         <li>
           <a href={post.url}>
@@ -64,7 +62,8 @@ const pageTitle = "你好";
     font-size: 0.9em;
   }
 </style>
-  <!-- <Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]} /> -->
+
+<!-- 联系方式 -->
 <div class="github-link">
 <span style="font-family: 'Segoe UI', Arial, sans-serif; font-style: italic; font-size: 2.5ch;">Find me on</span>
   <a href="https://github.com/moiseak/" target="_blank" rel="noopener noreferrer">

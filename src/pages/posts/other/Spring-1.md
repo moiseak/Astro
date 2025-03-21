@@ -1,13 +1,9 @@
 ---
-title: Spring（一）
-categories:
-  - 学习笔记
-tags:
-  - Java
-  - Spring
-excerpt: IoC容器基础
-abbrlink: 1d2ccb18
-date: 2024-11-17 20:35:33
+layout: '/src/layouts/MarkdownPostLayout.astro'
+title: "Spring #1"  
+description: "IoC容器基础"  
+pubDate: 2024-11-17   
+type: "summary" 
 ---
 # IoC
 IoC的意思是“控制反转”，就是把我们创建对象实例的权力交给Spring框架，我们不需要再自己手动去new一个对象。它会根据我们的配置文件去帮助我们实现类，目的是解耦各个模块，就是降低各个模块之间互相依赖的程度。
