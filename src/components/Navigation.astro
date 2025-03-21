@@ -5,13 +5,7 @@
 <div class="nav-links">
   <a href="/">主页</a>
   <a href="/thinking/">思考</a>
-  <div class="dropdown">
-    <a href="/programming/">编程</a>
-    <div class="dropdown-content">
-      <a href="/programming/algorithm/">算法</a>
-      <a href="/programming/interview/">面经</a>
-    </div>
-  </div>
+  <a href="/programming/">编程</a>
   <a href="/friends/">友链</a>
 </div>
 
@@ -50,44 +44,5 @@
   /* 删除原来的 a::after 相关样式 */
   .nav-links a:hover::after {
     width: 100%;
-  }
-
-  .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-  
-    .dropdown-content {
-      visibility: hidden;
-      opacity: 0;
-      position: absolute;
-      background-color: rgba(248, 250, 252, 0.98);
-      min-width: 180px;
-      box-shadow: 0 4px 12px rgba(148, 163, 184, 0.15);
-      z-index: 1;
-      border-radius: 8px;
-      margin-top: 0.5rem;
-      transition: all 0.3s ease;
-      transform: translateY(-10px);
-      backdrop-filter: blur(10px);
-    }
-  
-    .dropdown:hover .dropdown-content {
-      visibility: visible;
-      opacity: 1;
-      transform: translateY(0);
-    }
-  
-    .dropdown-content a {
-      padding: 12px 20px;
-      font-size: 1rem;
-      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-    }
-  
-    .dropdown-content a:last-child {
-      border-bottom: none;
-    }
-  .dropdown-content a:hover {
-    background-color: rgba(59, 130, 246, 0.05);  /* 淡蓝色悬停效果 */
   }
 </style>
