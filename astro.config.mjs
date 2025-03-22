@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
 
 export default defineConfig({
-  site: "https://moiads.xyz/",
+  site: "https://moiads.xyz",
   integrations: [preact()],
   build: {
     inlineStylesheets: 'auto',
@@ -17,16 +17,30 @@ export default defineConfig({
           manualChunks: {
             'vendor': ['astro'],
             'preact': ['preact']
-          }
+          },
+          // 添加代码分割优化
+          // 由于 chunkSizeWarningLimit 不是 rollup 的标准选项，移至 vite.build.chunkSizeWarningLimit
+          assetFileNames: 'assets/[name].[hash][extname]'
         }
       }
     },
     ssr: {
       noExternal: ['astro']
     },
-    // 添加性能优化配置
     optimizeDeps: {
       exclude: ['@astrojs/preact/client.js']
+    },
+    // 添加内存优化配置
+    server: {
+      hmr: {
+        overlay: false
+      },
+      watch: {
+        usePolling: false
+      }
     }
-  }
+  },
+  // 添加性能优化
+  output: 'static',
+  compressHTML: true
 });
