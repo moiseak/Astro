@@ -6,26 +6,6 @@ const pageTitle = "Zephyr's Blog";
 <BaseLayout pageTitle={pageTitle}>
 <!-- <h3 class="quote">"不要温和的走进那个良夜"</h3> -->
 
-<style>
-  .quote {
-    font-family: 'Cinzel', 'Ma Shan Zheng', serif;
-    font-size: 1.8em;
-    color: #2c3e50;
-    text-align: center;
-    margin: 2rem 0;
-    padding: 1rem;
-    border-left: 4px solid #3498db;
-    background: linear-gradient(to right, rgba(52, 152, 219, 0.1), transparent);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-
-  .quote:hover {
-    transform: translateX(10px);
-    border-left-color: #2980b9;
-  }
-</style>
-
 <div class="intro-section">
   <h2 class="greeting">你好</h2>
   <p class="name">可以叫我 Zephyr。</p>
@@ -43,40 +23,10 @@ const pageTitle = "Zephyr's Blog";
     animation: fadeIn 1s ease-in;
   }
 
-  /* @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  } */
-
-  .greeting {
-    font-size: 2em;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
-    animation: slideIn 0.8s ease-out;
-  }
-
-  /* @keyframes slideIn {
-    from {
-      transform: translateX(-30px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  } */
-
   .name {
     font-size: 1.2em;
     margin-bottom: 1.5rem;
     color: #34495e;
-    animation: slideIn 0.8s ease-out 0.2s backwards;
   }
 
   .description {
@@ -87,13 +37,11 @@ const pageTitle = "Zephyr's Blog";
   .description p {
     margin-bottom: 1rem;
     font-size: 1.1em;
-    animation: fadeIn 0.8s ease-out 0.4s backwards;
   }
 
   .jp-text {
     color: #666;
     font-style: italic;
-    animation: fadeIn 0.8s ease-out 0.6s backwards;
   }
 </style>
 
