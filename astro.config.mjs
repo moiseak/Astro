@@ -5,6 +5,13 @@ import preact from '@astrojs/preact';
 export default defineConfig({
   site: "https://zephyrblog.netlify.app",
   integrations: [preact()],
+  markdown: {
+    shikiConfig: {
+      langs: ['java', 'javascript', 'astro', 'bash', 'cpp', 'plaintext'],
+      theme: 'github-dark',
+      wrap: true
+    }
+  },
   build: {
     inlineStylesheets: 'auto',
   },
