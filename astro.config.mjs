@@ -7,9 +7,8 @@ export default defineConfig({
   integrations: [preact()],
   markdown: {
     shikiConfig: {
-      langs: ['java', 'javascript', 'astro', 'bash', 'cpp', 'plaintext'],
-      theme: 'github-dark',
-      wrap: true
+      theme: 'github-light',  // 使用 GitHub Light 主题
+      wrap: true , // 启用代码换行
     }
   },
   build: {

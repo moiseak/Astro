@@ -13,7 +13,8 @@
     "@astrojs/rss": "^4.0.11",
     "astro": "^5.5.3",
     "preact": "^10.26.4",
-    "shiki": "^3.2.1"
+    "shiki": "^3.2.1",
+    "shiki-languages": "^0.2.7"
   },
   "devDependencies": {
     "terser": "^5.39.0"

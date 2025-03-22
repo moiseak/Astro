@@ -129,50 +129,62 @@ blockquote a {
 
 pre {
   position: relative;
-  background-color: #1e293b;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1.2rem;
   margin: 1.5rem 0;
   overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 pre code {
-  color: #e2e8f0;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.9rem;
+  color: #1e293b;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+  font-size: 0.95rem;
   line-height: 1.6;
+  display: block;
 }
 
-/* 代码块右上角的复制按钮 */
+/* 复制按钮样式 */
 .copy-button {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
   padding: 0.4rem 0.8rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  color: #475569;
+  border: 1px solid #e2e8f0;
   border-radius: 4px;
-  color: #94a3b8;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .copy-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #e2e8f0;
+  background: rgba(0, 0, 0, 0.15);
+  color: #1e293b;
 }
 
-/* 代码块语言标识 */
+/* 语言标识 */
 .code-language {
   position: absolute;
   top: 0;
   right: 0;
   padding: 0.2rem 0.6rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
+  background: rgba(0, 0, 0, 0.1);
+  /* color: #475569; */
   font-size: 0.8rem;
   border-radius: 0 8px 0 4px;
 }
+
+/* 语法高亮 */
+.token.comment { color: #6b7280; font-style: italic; }
+.token.keyword { color: #8b5cf6; }
+.token.string { color: #059669; }
+.token.number { color: #d97706; }
+.token.function { color: #2563eb; }
+.token.class-name { color: #0369a1; }
+.token.property { color: #dc2626; }
+.token.operator { color: #4f46e5; }
 
 
