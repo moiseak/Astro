@@ -7,12 +7,12 @@ const pageTitle = "Zephyr's Blog";
 <!-- <h3 class="quote">"不要温和的走进那个良夜"</h3> -->
 
 <div class="intro-section">
-  <h2 class="greeting">你好</h2>
-  <p class="name">可以叫我 Zephyr。</p>
+  <h2 class="greeting">你好，欢迎来到我的博客</h2>
+  <p class="name">我是 Zephyr。</p>
 
-  <div class="description">
+  <!-- <div class="description">
     <p class="jp-text">迷子になる。</p>
-  </div>
+  </div> -->
 </div>
 
 <style>
@@ -49,7 +49,9 @@ const pageTitle = "Zephyr's Blog";
   <h3>最新文章</h3>
   <ul>
     {
-      (await Astro.glob('./posts/**/**/*.{md,mdx}')).sort(
+      (await Astro.glob('./posts/**/**/*.{md,mdx}')).
+      filter(post => !post.file.includes('Excalidraw')).
+      sort(
         (a, b) => new Date(b.frontmatter.pubDate).getTime() 
         - new Date(a.frontmatter.pubDate).getTime()
       ).slice(0, 5).map(post => (
@@ -58,7 +60,8 @@ const pageTitle = "Zephyr's Blog";
             {post.frontmatter.title}
           </a>
           <span class="post-date">
-            {new Date(post.frontmatter.pubDate).toLocaleDateString('zh-CN')}
+            {new Date(post.frontmatter.pubDate).
+            toLocaleDateString('zh-CN')}
           </span>
         </li>
       ))

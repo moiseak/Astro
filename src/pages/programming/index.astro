@@ -15,7 +15,7 @@ const posts = await Astro.glob('/src/pages/posts/**/*.md');
         // 直接使用已经解析的 posts 数据
         posts.forEach(post => {
           const path = post.file.split('posts/')[1];
-          if(!path.startsWith('thinking/')) {
+          if(!path.startsWith('thinking/') && !path.startsWith('Excalidraw/')) {
             const parts = path.split('/');
             let current = fileTree;
             

@@ -5,34 +5,12 @@ import CodeBlock from "../components/CodeBlock.astro";
 
 const { pageTitle } = Astro.props;
 ---
-
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="color-scheme" content="light dark" />
-    <style>
-      body {
-        font-family: "LXGW WenKai Screen", sans-serif;
-        font-weight: normal;
-      }
-
-      /* 移动端基础样式 */
-      @media (max-width: 768px) {
-        body {
-          font-size: 16px;
-          line-height: 1.6;
-        }
-
-        :root {
-          --content-width: 95%;
-          --content-padding: 1rem;
-        }
-      }
-    </style>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web/style.css" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{pageTitle}</title>
   </head>
   <body>

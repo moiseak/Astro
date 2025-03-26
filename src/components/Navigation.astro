@@ -14,35 +14,25 @@
     display: flex;
     gap: 2rem;
     align-items: center;
+    justify-content: center;  /* 添加居中对齐 */
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.8);  /* 更白的背景 */
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    background: transparent;  /* 移除背景色 */
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
   }
 
-  .dropdown-content {
-    background-color: rgba(255, 255, 255, 0.95);  /* 与导航栏背景相配 */
-    /* 其他样式保持不变 */
-  }
   .nav-links a {
     text-decoration: none;
     color: #475569;
     font-weight: 500;
     font-size: 1.1rem;
     position: relative;
-    padding: 0.5rem 1rem;  /* 增加左右内边距 */
-    border-radius: 6px;    /* 添加圆角 */
-    transition: all 0.3s ease;  /* 添加过渡效果 */
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
   }
 
-  /* 删除原来的下划线效果 */
   .nav-links a:hover {
     color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.05);  /* 淡蓝色背景 */
-  }
-
-  /* 删除原来的 a::after 相关样式 */
-  .nav-links a:hover::after {
-    width: 100%;
+    background-color: rgba(59, 130, 246, 0.05);
   }
 </style>
