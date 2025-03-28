@@ -1,28 +1,191 @@
 ---
-import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+
 const { frontmatter } = Astro.props;
 ---
 
-<BaseLayout pageTitle={frontmatter.title}>
-  <h1>{frontmatter.title}</h1>
-  <article class="post-content">
-    <div class="post-meta">
-      <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
-      <p><em>{frontmatter.description}</em></p>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{frontmatter.title}</title>
+  </head>
+  <body>
+    <Header />
+    <div class="container">
+      <!-- 左侧目录 -->
+      <nav class="side-nav">
+        <div class="nav-tree">
+          <slot name="nav" />
+        </div>
+      </nav>
+
+      <!-- 中间内容区 -->
+      <article class="post-content">
+        <h1>{frontmatter.title}</h1>
+        <div class="post-meta">
+          <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
+          <p><em>{frontmatter.description}</em></p>
+        </div>
+        <div class="content">
+          <slot />
+        </div>
+      </article>
+
+      <!-- 右侧大纲 -->
+      <aside class="toc">
+        <div class="toc-container">
+          <h3>目录</h3>
+          <div id="toc-content"></div>
+        </div>
+      </aside>
     </div>
-    <div class="content">
-      <slot />
-    </div>
-  </article>
-</BaseLayout>
+  </body>
+</html>
 
 <style>
-  .post-content {
-    font-size: 1.1rem;  /* 设置基础字体大小 */
-  }
-  .post-meta {
-    color: #666;
-    margin-bottom: 2rem;
+  .container {
+    display: grid;
+    grid-template-columns: 250px minmax(auto, 700px) 200px;
+    gap: 2rem;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
+  .side-nav {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 1rem;
+    border-right: 1px solid #eee;
+  }
+
+  .post-content {
+    font-size: 1.0rem;
+    line-height: 1.8;
+    width: 700px;
+    margin: 0 auto;
+  }
+
+  .toc {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding-left: 1rem;
+  }
+
+  .toc-container {
+    padding: 1rem;
+    border-left: 1px solid #eee;
+  }
+
+  /* 左侧目录树样式 */
+  .nav-tree {
+    font-size: 0.9rem;
+  }
+
+  .nav-tree :global(ul) {
+    list-style: none;
+    padding-left: 1.2rem;
+  }
+
+  .nav-tree :global(li) {
+    margin: 0.5rem 0;
+  }
+
+  .nav-tree :global(a) {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-tree :global(a:hover) {
+    color: #3b82f6;
+  }
 </style>
+
+<script>
+  // 生成目录
+  document.addEventListener('DOMContentLoaded', () => {
+    const article = document.querySelector('.content');
+    const tocContent = document.querySelector('#toc-content');
+    
+    if (article && tocContent) {
+      const headings = article.querySelectorAll('h2, h3, h4');
+      const toc = document.createElement('ul');
+      
+      headings.forEach((heading, index) => {
+        const id = `heading-${index}`;
+        heading.id = id;
+        
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        
+        a.href = `#${id}`;
+        a.textContent = heading.textContent;
+        a.style.paddingLeft = `${(heading.tagName.charAt(1) - 2) * 1}rem`;
+        
+        li.appendChild(a);
+        toc.appendChild(li);
+      });
+      
+      tocContent.appendChild(toc);
+    }
+  });
+</script>
+
+<style is:global>
+  #toc-content ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  #toc-content a {
+    display: block;
+    padding: 0.3rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  #toc-content a:hover {
+    color: #3b82f6;
+  }
+
+  /* 添加图片样式 */
+  .content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 大图片点击放大效果 */
+  .content img:hover {
+    cursor: zoom-in;
+    transform: scale(1.01);
+    transition: transform 0.2s ease;
+  }
+</style>
+
+<script>
+  // 添加图片点击放大功能
+  document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('.content img');
+    
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          img.requestFullscreen();
+        }
+      });
+    });
+  });
+</script>
