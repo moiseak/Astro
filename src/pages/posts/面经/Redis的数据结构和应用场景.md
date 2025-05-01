@@ -20,3 +20,4 @@ Redis 后续版本又支持四种数据类型，它们的应用场景如下：
 - HyperLogLog（2.8 版新增）：海量数据基数统计的场景，比如百万级网页 UV 计数等；
 - GEO（3.2 版新增）：存储地理位置信息的场景，比如滴滴叫车；
 - Stream（5.0 版新增）：消息队列，相比于基于 List 类型实现的消息队列，有这两个特有的特性：自动生成全局唯一消息ID，支持以消费组形式消费数据。
+![image.png](https://raw.githubusercontent.com/moiseak/blogimg/main/img/20250501205751.png)
