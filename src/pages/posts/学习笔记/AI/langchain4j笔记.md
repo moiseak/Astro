@@ -48,6 +48,8 @@ public class LangChainConfig {
 
 这样就创建好模型了！
 
+> 也可以直接在配置文件里写
+
 ## ChatLanguageModel测试
 
 ```Java
