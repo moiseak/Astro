@@ -15,7 +15,7 @@ langchain4j.community.dashscope.model-name=qwen-max
 
 依赖：
 
-```
+```java
 <dependency>  
     <groupId>dev.langchain4j</groupId>  
     <artifactId>langchain4j-community-dashscope-spring-boot-starter</artifactId>  

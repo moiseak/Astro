@@ -7,6 +7,7 @@ const { frontmatter } = Astro.props;
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <title>{frontmatter.title}</title>
   </head>
@@ -46,11 +47,13 @@ const { frontmatter } = Astro.props;
 <style>
   .container {
     display: grid;
-    grid-template-columns: 250px minmax(auto, 700px) 200px;
+    grid-template-columns: 250px minmax(auto, 700px) 300px;
     gap: 2rem;
     max-width: 100%;
     margin: 0 auto;
   }
+
+
 
   .side-nav {
     position: sticky;
@@ -74,11 +77,21 @@ const { frontmatter } = Astro.props;
     height: calc(100vh - 4rem);
     overflow-y: auto;
     padding-left: 1rem;
+    width: 300px;  /* 添加固定宽度 */
   }
 
   .toc-container {
-    padding: 1rem;
+    padding: 1.5rem;  /* 增加内边距 */
     border-left: 1px solid #eee;
+    height: 100%;    /* 确保容器占满高度 */
+  }
+
+  /* 优化目录标题样式 */
+  .toc-container h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #374151;
   }
 
   /* 左侧目录树样式 */
@@ -171,6 +184,101 @@ const { frontmatter } = Astro.props;
     transform: scale(1.01);
     transition: transform 0.2s ease;
   }
+  
+  /* 现代化代码块样式 */
+  .content pre {
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .content pre::before {
+    content: '';
+    height: 24px;
+    background: #f0f0f0;
+    display: block;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .content pre::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    width: 12px;
+    height: 12px;
+    background-color: #ff5f56;
+    border-radius: 50%;
+    box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+  }
+  
+  .content pre code {
+    display: block;
+    padding: 1rem;
+    counter-reset: line;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    overflow-x: auto;
+  }
+
+  /* 引用块样式 */
+  .content blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid #3b82f6;
+    background-color: #f8fafc;
+    border-radius: 0 8px 8px 0;
+    color: #4a5568;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .content blockquote p {
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .content blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* 嵌套引用样式 */
+  .content blockquote blockquote {
+    margin: 1rem 0;
+    border-left-color: #64748b;
+  }
+
+  /* 行内代码样式 */
+  .content code:not(pre code) {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 0.85em;
+    background-color: rgba(175, 184, 193, 0.2);
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  }
+
+  .content code:not(pre code)::before,
+  .content code:not(pre code)::after {
+    /* content: '`'; */
+    color: #6e7781;
+  }
+
+  /* 确保行内代码在链接中的样式 */
+  .content a code:not(pre code) {
+    color: inherit;
+  }
+
+  /* 行内代码悬停效果 */
+  .content code:not(pre code):hover {
+    background-color: rgba(175, 184, 193, 0.3);
+  }
 </style>
 
 <script>
@@ -187,5 +295,5 @@ const { frontmatter } = Astro.props;
         }
       });
     });
-  });
+  })
 </script>

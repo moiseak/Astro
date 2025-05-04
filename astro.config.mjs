@@ -7,9 +7,15 @@ export default defineConfig({
   integrations: [preact()],
   markdown: {
     shikiConfig: {
-      theme: 'github-light',  // 使用 GitHub Light 主题
-      wrap: true , // 启用代码换行
-    }
+      theme:"light-plus",
+      langAlias: {
+        Java: "java",
+        JAva: "java"
+      },
+      wrap: true,
+    },
+    
+    // 启用自动换行以防止水平滚动
   },
   build: {
     inlineStylesheets: 'auto',

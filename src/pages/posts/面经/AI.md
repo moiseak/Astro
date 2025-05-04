@@ -1,7 +1,7 @@
 ---
 layout: /src/layouts/MarkdownPostLayout.astro
-title: RAG
-description: RAG
+title: AI
+description: AI相关面试题
 pubDate: 2025-05-03
 ---
 ## RAG（Retrieval-Augmented Generation）

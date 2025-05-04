@@ -37,8 +37,7 @@ head.next = afterNode;  //接上第N+1及后面的节点
 
 完整解法如下：
 
-```Java
-
+```java
 ListNode after = null;
 
 // 反转以 head 为起点的 n 个节点，返回新的头结点

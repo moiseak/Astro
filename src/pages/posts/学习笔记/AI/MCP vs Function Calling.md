@@ -8,25 +8,23 @@ pubDate: 2025-05-01
 
 Function Calling 和 Model Context Protocol（模型上下文协议，MCP）是实现这种让 LLM 与外部系统进行交互的两种关键技术概念。然而二者在概念上有所重叠，很多人并不能讲出两种概念的区别与联系。
 
-Function Calling
+## Function Calling
 
 外部系统通常会以函数（function）的形式进行封装，LLM 通过函数调用（function calling）可以实现与外部系统的交互。
 
-工具（Tool）
+>工具（Tool）
 
-Function 这个术语实际上已经废弃了，取而代之的是 Tool[3]。Tool 泛指指一切 LLM 能够调用的外部工具。Tool 相比 function 要更加广义，只不过目前的 tool 只有 function calling 这一种形式，因此为了文章方便理解，就这里认为 function 与 tool 是等价的。
+Function 这个术语实际上已经废弃了，取而代之的是 Tool。Tool 泛指指一切 LLM 能够调用的外部工具。Tool 相比 function 要更加广义，只不过目前的 tool 只有 function calling 这一种形式，因此为了文章方便理解，就这里认为 function 与 tool 是等价的。
 
-Function Calling 具体指的是 LLM 根据用户的自然语言输入，自主决定调用哪些函数，并进行格式化的函数调用的能力。
+Function Calling 具体指的是 LLM 根据用户的自然语言输入，自主决定调用哪些函数，并进行格式化的函数调用的能力。一般的过程如下：
 
-Function Calling 一般的过程如下：
+1. 将用户的自然语言输入与已有函数的描述作为输入参数传给 LLM；
 
-将用户的自然语言输入与已有函数的描述作为输入参数传给 LLM；
+2. LLM 结合输入参数，决定调用哪些函数，并指明必要参数（如函数的入参），进行格式化（如 JSON、XML 格式）的输出；
 
-LLM 结合输入参数，决定调用哪些函数，并指明必要参数（如函数的入参），进行格式化（如 JSON、XML 格式）的输出；
+3. 用户端接收到 LLM 格式化的函数调用后，对本地的函数进行调用，得到结果；
 
-用户端接收到 LLM 格式化的函数调用后，对本地的函数进行调用，得到结果；
-
-将得到的函数结果传给 LLM，使得 LLM 有了所需的上下文信息。
+4. 将得到的函数结果传给 LLM，使得 LLM 有了所需的上下文信息。
 
 Function Calling 时序图（来自 OpenAI 开发者文档）
 ![image.png](https://raw.githubusercontent.com/moiseak/blogimg/main/img/20250501141138.png)
@@ -36,8 +34,9 @@ Function Calling 实际上强调的是 LLM 本身的能力，一些经过特殊�
 
 假设我们有个叫做 get_weather 的 function，入参为地点 location，不同 LLM 提供商会给出不同的 function calling 格式：
 
-OpenAI ChatGPT：
+>OpenAI ChatGPT：
 
+```json
 {
     "type": "function_call",
     "id": "fc_12345xyz",
@@ -45,9 +44,11 @@ OpenAI ChatGPT：
     "name": "get_weather",
     "arguments": "{\"location\": \"Shanghai\"}"
 }
+```
 
-Anthropic Claude：
+>Anthropic Claude：
 
+```json
 {
   "role": "assistant",
   "content": [
@@ -63,9 +64,11 @@ Anthropic Claude：
     }
   ]
 }
+```
 
-Google Gemini：
+>Google Gemini：
 
+```json
 {
   "functionCall": {
     "name": "get_weather",
@@ -74,13 +77,15 @@ Google Gemini：
     }
   }
 }
+```
 
-Model Context Protocol (MCP)
+## Model Context Protocol (MCP)
 
 当 LLM 发起了一个 function calling 后，这个 calling 最终会需要外部系统进行执行，而 MCP 正是提供了一个通用的协议框架调用外部系统执行这个 function calling。本文不会对 MCP 的概念进行具体说明，假设读者已了解。
 
 带入到上文所述的 function calling 步骤，MCP 实际上规范的就是步骤 3，也就是函数的具体执行过程。无论 LLM 返回的 function calling 是什么样子的格式，在步骤 3 时都需要转换成 MCP 所规定的 API 数据结构（这一步转换应该是 MCP host 需要做的），并需要 LLM 用户侧按照 MCP 的规范进行响应的处理。例如对于上文的 get_weather ，MCP server 接收到的请求结构必须是这样的 JSON-RPC：
 
+```json
 {
   "jsonrpc": "2.0",
   "id": 129,
@@ -92,9 +97,10 @@ Model Context Protocol (MCP)
     }
   }
 }
+```
 
 MCP client 接收到的响应则是类似于这样的 JSON-RPC：
-
+```json
 {
   "jsonrpc": "2.0",
   "id": 2,
@@ -108,18 +114,20 @@ MCP client 接收到的响应则是类似于这样的 JSON-RPC：
     "isError":false
   }
 }
+```
+
 
 MCP 标准化了 LLM 应用与外部系统的以下交互过程：
 
-动态地提供对可用函数的标准化的描述（比如通过 tools/list API）；
+- 动态地提供对可用函数的标准化的描述（比如通过 tools/list API）；
 
-标准化对外部系统的调用与结果的处理（MCP 规范了 MCP server 需要有哪些 API 能力，以及 API 的请求/相应数据结构）。
+- 标准化对外部系统的调用与结果的处理（MCP 规范了 MCP server 需要有哪些 API 能力，以及 API 的请求/相应数据结构）。
 
 如果没有 MCP 这样的协议规范，不同团队的 LLM 应用需要：
 
-自行维护可用函数列表；
+- 自行维护可用函数列表；
 
-外部系统的接入需要进行针对适配，不具有通用性。
+- 外部系统的接入需要进行针对适配，不具有通用性。
 
 现在只要一个 LLM 应用有 MCP client 的功能，那么它就一定能支持接入任何具有 MCP server 功能的外部系统，且不需要额外的适配成本，MCP 很好地构建了 LLM 应用的大生态。
 
