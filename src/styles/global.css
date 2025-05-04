@@ -1,7 +1,8 @@
 
 html {
-background: #f8fafc;  /* 更浅的背景色 */
-color: #475569;
+    background: #f8fafc;
+    /* background: 'oklch(0.98 0.0172 280.05)'; */
+    color: #475569;
 }
 
 
@@ -83,108 +84,6 @@ h1 {
     }
 
 }
-html.dark {
-    background-color: #0d0950;
-    color: #fff;
-}
 
-.dark .nav-links a {
-    color: #fff;
-}
-
-blockquote {
-  margin: 2rem 0;
-  padding: 1.5rem 2rem;
-  border-left: 4px solid #3b82f6;
-  background: rgba(59, 130, 246, 0.05);
-  border-radius: 0 8px 8px 0;
-  color: #4b5563;
-  font-style: italic;
-  line-height: 1.6;
-  position: relative;
-}
-
-blockquote::before {
-  content: '"';
-  position: absolute;
-  top: 0;
-  left: 1rem;
-  font-size: 3rem;
-  color: #3b82f6;
-  opacity: 0.2;
-  font-family: Georgia, serif;
-}
-
-blockquote p {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-/* 如果引用中有链接 */
-blockquote a {
-  color: #3b82f6;
-  text-decoration: underline;
-  text-decoration-color: rgba(59, 130, 246, 0.3);
-}
-
-pre {
-  position: relative;
-  border-radius: 8px;
-  padding: 1.2rem;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-pre code {
-  color: #1e293b;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  display: block;
-}
-
-/* 复制按钮样式 */
-.copy-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  background: rgba(0, 0, 0, 0.1);
-  color: #475569;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.copy-button:hover {
-  background: rgba(0, 0, 0, 0.15);
-  color: #1e293b;
-}
-
-/* 语言标识 */
-.code-language {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.2rem 0.6rem;
-  background: rgba(0, 0, 0, 0.1);
-  /* color: #475569; */
-  font-size: 0.8rem;
-  border-radius: 0 8px 0 4px;
-}
-
-/* 语法高亮 */
-.token.comment { color: #6b7280; font-style: italic; }
-.token.keyword { color: #8b5cf6; }
-.token.string { color: #059669; }
-.token.number { color: #d97706; }
-.token.function { color: #2563eb; }
-.token.class-name { color: #0369a1; }
-.token.property { color: #dc2626; }
-.token.operator { color: #4f46e5; }
 
 

@@ -2,6 +2,42 @@
 import Header from "../components/Header.astro";
 
 const { frontmatter } = Astro.props;
+
+// 获取当前文章路径
+const currentPath = Astro.url.pathname;
+// 提取当前文章所在目录
+const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+// 解码当前目录路径
+const decodedCurrentDir = decodeURIComponent(currentDir);
+// 获取所有文章
+const allPosts = await Astro.glob('../pages/posts/**/*.md');
+// 调试输出
+// console.log("当前路径:", currentPath);
+// console.log("当前目录:", currentDir);
+// console.log("解码后的当前目录:", decodedCurrentDir);
+// console.log("找到的文章数量:", allPosts.length);
+
+// 筛选出同目录的文章
+const sameDirPosts = allPosts
+  .filter(post => {
+    // 确保post.url存在
+    if (!post.url) {
+      console.log("文章没有URL:", post.file);
+      return false;
+    }
+    
+    // 获取文章的目录部分
+    const postDir = post.url.substring(0, post.url.lastIndexOf('/'));
+    const decodedPostDir = decodeURIComponent(postDir);
+    
+    // 检查是否同目录（使用解码后的路径比较）
+    const isSameDir = decodedPostDir === decodedCurrentDir;
+    // console.log(`检查文章 ${post.url} (${decodedPostDir}) 是否在目录 ${decodedCurrentDir}: ${isSameDir}`);
+    return isSameDir;
+  })
+  .sort((a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime());
+
+// console.log("同目录文章数量:", sameDirPosts.length);
 ---
 
 <html lang="zh-CN">
@@ -17,6 +53,19 @@ const { frontmatter } = Astro.props;
       <!-- 左侧目录 -->
       <nav class="side-nav">
         <div class="nav-tree">
+          <h3>同目录文章</h3>
+          <ul>
+            {sameDirPosts.map(post => (
+              <li>
+                <a 
+                  href={post.url} 
+                  class={post.url === currentPath ? 'active' : ''}
+                >
+                  {post.frontmatter.title}
+                </a>
+              </li>
+            ))}
+          </ul>
           <slot name="nav" />
         </div>
       </nav>
@@ -53,7 +102,10 @@ const { frontmatter } = Astro.props;
     margin: 0 auto;
   }
 
-
+  html {
+    background: #f8fafc;  /* 更浅的背景色 */
+    color: #475569;
+  }
 
   .side-nav {
     position: sticky;
@@ -97,6 +149,43 @@ const { frontmatter } = Astro.props;
   /* 左侧目录树样式 */
   .nav-tree {
     font-size: 0.9rem;
+  }
+
+  .nav-tree h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #374151;
+  }
+
+  .nav-tree ul {
+    list-style: none;
+    padding-left: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .nav-tree li {
+    margin: 0.5rem 0;
+  }
+
+  .nav-tree a {
+    display: block;
+    padding: 0.5rem;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s;
+    border-radius: 4px;
+  }
+
+  .nav-tree a:hover {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.05);
+  }
+
+  .nav-tree a.active {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+    font-weight: 500;
   }
 
   .nav-tree :global(ul) {
