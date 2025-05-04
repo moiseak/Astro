@@ -1,7 +1,7 @@
 ---
 layout: /src/layouts/MarkdownPostLayout.astro
-title: langchain4j
-description: langchain4j
+title: Langchain4j笔记
+description: Langchain4j笔记
 pubDate: 2025-04-29
 ---
 ## 模型配置

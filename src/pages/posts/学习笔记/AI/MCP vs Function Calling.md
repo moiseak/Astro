@@ -1,7 +1,7 @@
 ---
 layout: /src/layouts/MarkdownPostLayout.astro
-title: mcp vs function call
-description: mcp vs function call
+title: MCP vs Function Calling
+description: MCP vs Function Calling
 pubDate: 2025-05-01
 ---
 自从大语言模型（LLM）横空出世以来，如何将 LLM 与现有商业系统有效结合、让其真正赋能各类业务，已成为当前最热门的研究方向之一。
