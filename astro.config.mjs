@@ -28,8 +28,16 @@ export default defineConfig({
             'preact': ['preact']
           },
           // 添加代码分割优化
-          // 由于 chunkSizeWarningLimit 不是 rollup 的标准选项，移至 vite.build.chunkSizeWarningLimit
-          assetFileNames: 'assets/[name].[hash][extname]'
+          assetFileNames: 'assets/[name].[hash][extname]',
+          chunkFileNames: 'assets/chunks/[name].[hash].js',
+          entryFileNames: 'assets/[name].[hash].js'
+        }
+      },
+      // 添加 terser 配置
+      terserOptions: {
+        compress: {
+          drop_console: true,  // 移除 console
+          drop_debugger: true  // 移除 debugger
         }
       }
     },

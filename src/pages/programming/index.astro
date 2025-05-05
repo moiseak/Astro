@@ -68,13 +68,19 @@ const posts = await Astro.glob('/src/pages/posts/**/*.md');
   document.addEventListener('DOMContentLoaded', () => {
     const fileExplorer = document.getElementById('fileExplorer');
     
-    fileExplorer.addEventListener('click', (e) => {
-      const folderName = e.target.closest('.folder-name');
-      if (folderName) {
-        const folder = folderName.parentElement;
-        folder.classList.toggle('open');
-      }
-    });
+    if (fileExplorer) {
+      fileExplorer.addEventListener('click', (e) => {
+        const folderName = e.target.closest('.folder-name');
+        if (folderName) {
+          e.preventDefault(); // 阻止默认事件
+          e.stopPropagation(); // 阻止事件冒泡
+          const folder = folderName.parentElement;
+          if (folder) {
+            folder.classList.toggle('open');
+          }
+        }
+      });
+    }
   });
 </script>
  

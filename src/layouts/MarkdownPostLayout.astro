@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from "astro:transitions";
+
 import Header from "../components/Header.astro";
 
 const { frontmatter } = Astro.props;
@@ -32,6 +34,7 @@ const sameDirPosts = allPosts
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <title>{frontmatter.title}</title>
+    <ClientRouter />
   </head>
   <body>
     <Header />
@@ -254,8 +257,6 @@ const sameDirPosts = allPosts
   #toc-content a:hover {
     color: #3b82f6;
   }
-
-  /* 添加图片样式 */
   .content img {
     max-width: 100%;
     height: auto;
@@ -263,8 +264,12 @@ const sameDirPosts = allPosts
     margin: 1.5rem auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    loading: lazy;
   }
+  /* 在图片样式部分添加 -->
 
+
+  
   /* 大图片点击放大效果 */
   .content img:hover {
     cursor: zoom-in;
@@ -368,6 +373,7 @@ const sameDirPosts = allPosts
   }
 </style>
 
+<!-- 图片点击放大功能 -->
 <script>
   // 添加图片点击放大功能
   document.addEventListener('DOMContentLoaded', () => {

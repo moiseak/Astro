@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/thinking.css"
 
@@ -37,6 +38,7 @@ const currentPosts = sortedPosts.slice(pageStart, pageEnd);
 ---
 
 <BaseLayout pageTitle="思考">
+  <ClientRouter />
   <section class="posts">
     {
       currentPosts.map((post) => (

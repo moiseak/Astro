@@ -1,18 +1,13 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import BaseLayout from "../layouts/BaseLayout.astro";
 const pageTitle = "Zephyr's Blog";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-<!-- <h3 class="quote">"不要温和的走进那个良夜"</h3> -->
-
+  <ClientRouter />
 <div class="intro-section">
-  <h2 class="greeting">你好，欢迎来到我的博客</h2>
-  <p class="name">我是 Zephyr。</p>
-
-  <!-- <div class="description">
-    <p class="jp-text">迷子になる。</p>
-  </div> -->
+  <h2 class="greeting">你好，我是 Zephyr。</h2>
 </div>
 
 <style>
@@ -22,29 +17,9 @@ const pageTitle = "Zephyr's Blog";
     padding: 0 1rem;
     animation: fadeIn 1s ease-in;
   }
-
-  .name {
-    font-size: 1.2em;
-    margin-bottom: 1.5rem;
-    color: #34495e;
-  }
-
-  .description {
-    line-height: 1.8;
-    color: #444;
-  }
-
-  .description p {
-    margin-bottom: 1rem;
-    font-size: 1.1em;
-  }
-
-  .jp-text {
-    color: #666;
-    font-style: italic;
-  }
 </style>
 
+<!-- 最近文章 -->
 <div class="recent-posts">
   <h3>最新文章</h3>
   <ul>
@@ -69,6 +44,7 @@ const pageTitle = "Zephyr's Blog";
   </ul>
 </div>
 
+<!-- 最近文章css -->
 <style>
   .recent-posts {
     margin: 2rem 0;
@@ -121,6 +97,7 @@ const pageTitle = "Zephyr's Blog";
   </a>
 </div>
 
+<!-- 联系方式css -->
 <style>
   .github-link {
     margin: 1rem 0;

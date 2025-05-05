@@ -1,8 +1,10 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout pageTitle="友链">
+  <ClientRouter />
   <div class="friends-list">
     <!-- 在这里添加你的友链列表 -->
     <div class="friend-card">
