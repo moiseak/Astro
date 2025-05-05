@@ -21,7 +21,7 @@ const sameDirPosts = allPosts
       ? postUrl.substring(0, postUrl.lastIndexOf('/'))
       : postUrl;
     
-    return postDir === currentDir && postUrl !== currentPath;
+    return postDir === currentDir;
   })
   .sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate));
 ---
