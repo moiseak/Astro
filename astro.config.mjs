@@ -17,9 +17,6 @@ export default defineConfig({
     
     // 启用自动换行以防止水平滚动
   },
-  build: {
-    inlineStylesheets: 'auto',
-  },
   vite: {
     build: {
       cssCodeSplit: true,

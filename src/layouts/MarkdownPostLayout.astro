@@ -37,7 +37,7 @@ const sameDirPosts = allPosts
   })
   .sort((a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime());
 
-// console.log("同目录文章数量:", sameDirPosts.length);
+console.log("同目录文章数量:", sameDirPosts.length);
 ---
 
 <html lang="zh-CN">
@@ -108,6 +108,7 @@ const sameDirPosts = allPosts
   }
 
   .side-nav {
+    visibility: visible !important;
     position: sticky;
     top: 2rem;
     height: calc(100vh - 4rem);
@@ -213,15 +214,10 @@ const sameDirPosts = allPosts
   document.addEventListener('DOMContentLoaded', () => {
     const article = document.querySelector('.content');
     const tocContent = document.querySelector('#toc-content');
-    console.log("TOC 生成开始", {
-      articleExists: !!article,
-      tocContentExists: !!tocContent
-    });
     
     if (article && tocContent) {
       const headings = article.querySelectorAll('h2, h3, h4');
-      console.log(`找到 ${headings.length} 个标题`);
-      
+    
       if (headings.length === 0) {
         tocContent.innerHTML = '<p>本文没有目录</p>';
         return;
@@ -245,7 +241,6 @@ const sameDirPosts = allPosts
       });
       
       tocContent.appendChild(toc);
-      console.log("TOC 生成完成");
     } else {
       console.error("TOC 生成失败", {
         articleSelector: '.content',
