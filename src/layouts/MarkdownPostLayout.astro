@@ -3,51 +3,20 @@ import Header from "../components/Header.astro";
 
 const { frontmatter } = Astro.props;
 
-// 获取当前文章路径
-const currentPath = Astro.url.pathname;
-// 提取当前文章所在目录
-const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
-// 解码当前目录路径
-const decodedCurrentDir = decodeURIComponent(currentDir);
-// 获取所有文章
-const allPosts = await Astro.glob('../pages/posts/**/*.md');
-// 调试输出
-// console.log("当前路径:", currentPath);
-// console.log("当前目录:", currentDir);
-// console.log("解码后的当前目录:", decodedCurrentDir);
-// console.log("找到的文章数量:", allPosts.length);
+// 获取所有 md 文章
+const allPosts = await Astro.glob('/src/pages/posts/**/*.md');
 
-// 筛选出同目录的文章
+// 当前文章路径
+const currentPath = frontmatter.url || Astro.url.pathname;
+const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+
+// 找到同目录下的其它文章
 const sameDirPosts = allPosts
   .filter(post => {
-    // 确保post.url存在
-    if (!post.url) {
-      console.log("文章没有URL:", post.file);
-      return false;
-    }
-    
-    // 获取文章的目录部分
     const postDir = post.url.substring(0, post.url.lastIndexOf('/'));
-    const decodedPostDir = decodeURIComponent(postDir);
-    
-    // 提取路径的最后一部分进行比较（更健壮的方法）
-    const postDirSegments = decodedPostDir.split('/').filter(Boolean);
-    const currentDirSegments = decodedCurrentDir.split('/').filter(Boolean);
-    
-    // 如果两个路径的最后一个段相同，则认为它们在同一目录
-    const isSameDir = postDirSegments.length > 0 && 
-                      currentDirSegments.length > 0 && 
-                      postDirSegments[postDirSegments.length - 1] === 
-                      currentDirSegments[currentDirSegments.length - 1];
-    
-    // 调试输出（部署后可以注释掉）
-    console.log(`文章: ${post.url}, 目录: ${decodedPostDir}, 当前目录: ${decodedCurrentDir}, 是否同目录: ${isSameDir}`);
-    
-    return isSameDir;
+    return postDir === currentDir && post.url !== currentPath;
   })
-  .sort((a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime());
-
-console.log("同目录文章数量:", sameDirPosts.length);
+  .sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate));
 ---
 
 <html lang="zh-CN">
@@ -64,17 +33,9 @@ console.log("同目录文章数量:", sameDirPosts.length);
       <nav class="side-nav">
         <div class="nav-tree">
           <h3>同目录文章</h3>
-          <ul>
-            {sameDirPosts.map(post => (
-              <li>
-                <a 
-                  href={post.url} 
-                  class={post.url === currentPath ? 'active' : ''}
-                >
-                  {post.frontmatter.title}
-                </a>
-              </li>
-            ))}
+          <ul id="same-dir-posts">
+            <!-- 这里的内容将由客户端脚本动态生成 -->
+            <li><em>加载中...</em></li>
           </ul>
           <slot name="nav" />
         </div>
@@ -219,12 +180,12 @@ console.log("同目录文章数量:", sameDirPosts.length);
   }
 </style>
 
-<script>
+<!-- 右侧目录生成 -->
+<script  is:inline>
   // 生成目录
   document.addEventListener('DOMContentLoaded', () => {
     const article = document.querySelector('.content');
     const tocContent = document.querySelector('#toc-content');
-    
     if (article && tocContent) {
       const headings = article.querySelectorAll('h2, h3, h4');
     
@@ -259,6 +220,7 @@ console.log("同目录文章数量:", sameDirPosts.length);
     }
   });
 </script>
+
 
 <style is:global>
   #toc-content ul {
@@ -408,3 +370,130 @@ console.log("同目录文章数量:", sameDirPosts.length);
     });
   })
 </script>
+
+
+<!-- 左侧同目录文章生成 -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // 获取当前文章路径
+    const currentPath = window.location.pathname;
+    // 提取当前文章所在目录
+    const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+    // 解码当前目录路径
+    const decodedCurrentDir = decodeURIComponent(currentDir);
+    
+    // 调试信息：当前路径信息
+    console.log('当前页面信息:', {
+      currentPath,
+      currentDir,
+      decodedCurrentDir
+    });
+    
+    // 获取同目录文章列表容器
+    const sameDirPostsContainer = document.getElementById('same-dir-posts');
+
+    try {
+      // 获取所有文章链接
+      const allLinks = Array.from(document.querySelectorAll('a[href]'))
+        .filter(link => {
+          const href = link.getAttribute('href');
+          // 调试信息：链接过滤
+          console.log('检查链接:', href);
+          
+          // 只考虑以 / 开头的链接
+          if (!href || !href.startsWith('/')) {
+            console.log('排除链接(不以/开头):', href);
+            return false;
+          }
+          
+          // 检查是否是文章链接，并且在同一目录下
+          const linkDir = href.substring(0, href.lastIndexOf('/'));
+          const decodedLinkDir = decodeURIComponent(linkDir);
+          
+          // 调试信息：目录比较
+          console.log('比较目录:', {
+            href,
+            linkDir: decodedLinkDir,
+            currentDir: decodedCurrentDir,
+            isSameDir: decodedLinkDir === decodedCurrentDir
+          });
+          
+          // 检查是否在同一目录下，不再检查文件扩展名
+          return decodedLinkDir === decodedCurrentDir;
+        })
+        .map(link => {
+          const href = link.getAttribute('href');
+          const title = link.textContent.trim();
+          console.log('找到文章链接:', { href, title });
+          return { url: href, title };
+        });
+      
+      console.log('找到的所有文章链接:', allLinks);
+      
+      // 筛选出同目录的文章
+      const sameDirPosts = allLinks.filter(post => {
+        // 获取文章的目录部分
+        const postDir = post.url.substring(0, post.url.lastIndexOf('/'));
+        const decodedPostDir = decodeURIComponent(postDir);
+        
+        // 调试信息：目录比较
+        console.log('比较目录:', {
+          postUrl: post.url,
+          postDir: decodedPostDir,
+          currentDir: decodedCurrentDir,
+          isSameDir: decodedPostDir === decodedCurrentDir,
+          isCurrentPost: post.url === currentPath
+        });
+        
+        // 直接比较完整路径，而不是只比较最后一段
+        return decodedPostDir === decodedCurrentDir && post.url !== currentPath;
+      });
+      
+      console.log('筛选后的同目录文章:', sameDirPosts);
+      
+      // 如果找不到同目录文章，显示提示信息
+      if (sameDirPosts.length === 0) {
+        console.log('未找到同目录文章');
+        sameDirPostsContainer.innerHTML = '<li><em>没有找到同目录文章</em></li>';
+        return;
+      }
+      
+      // 生成同目录文章列表
+      const postsHTML = sameDirPosts
+        .map(post => {
+          const isActive = post.url === currentPath;
+          return `<li><a href="${post.url}" class="${isActive ? 'active' : ''}">${post.title}</a></li>`;
+        })
+        .join('');
+      
+      // 更新容器内容
+      sameDirPostsContainer.innerHTML = postsHTML;
+      
+      // 添加点击事件
+      const links = sameDirPostsContainer.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
+      });
+      
+      console.log(`成功生成同目录文章列表，共 ${sameDirPosts.length} 篇文章`);
+    } catch (error) {
+      console.error('获取同目录文章失败:', error);
+      sameDirPostsContainer.innerHTML = '<li><em>加载同目录文章失败</em></li>';
+    }
+  });
+</script>
+
+<ul id="same-dir-posts">
+  {sameDirPosts.length === 0 ? (
+    <li><em>没有找到同目录文章</em></li>
+  ) : (
+    sameDirPosts.map(post => (
+      <li>
+        <a href={post.url}>{post.frontmatter.title}</a>
+      </li>
+    ))
+  )}
+</ul>
