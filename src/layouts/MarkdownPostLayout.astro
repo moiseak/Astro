@@ -30,9 +30,19 @@ const sameDirPosts = allPosts
     const postDir = post.url.substring(0, post.url.lastIndexOf('/'));
     const decodedPostDir = decodeURIComponent(postDir);
     
-    // 检查是否同目录（使用解码后的路径比较）
-    const isSameDir = decodedPostDir === decodedCurrentDir;
-    // console.log(`检查文章 ${post.url} (${decodedPostDir}) 是否在目录 ${decodedCurrentDir}: ${isSameDir}`);
+    // 提取路径的最后一部分进行比较（更健壮的方法）
+    const postDirSegments = decodedPostDir.split('/').filter(Boolean);
+    const currentDirSegments = decodedCurrentDir.split('/').filter(Boolean);
+    
+    // 如果两个路径的最后一个段相同，则认为它们在同一目录
+    const isSameDir = postDirSegments.length > 0 && 
+                      currentDirSegments.length > 0 && 
+                      postDirSegments[postDirSegments.length - 1] === 
+                      currentDirSegments[currentDirSegments.length - 1];
+    
+    // 调试输出（部署后可以注释掉）
+    console.log(`文章: ${post.url}, 目录: ${decodedPostDir}, 当前目录: ${decodedCurrentDir}, 是否同目录: ${isSameDir}`);
+    
     return isSameDir;
   })
   .sort((a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime());
