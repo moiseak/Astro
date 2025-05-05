@@ -2,16 +2,12 @@
 const CACHE_VERSION = 'v1';
 const CACHE_NAME = `blog-cache-${CACHE_VERSION}`;
 
-// 需要缓存的资源列表
+// 需要缓存的资源列表 - 确保这些资源都存在
 const urlsToCache = [
   '/',
-  '/thinking/',
-  '/programming/',
-  '/friends/',
   '/favicon.svg',
-  '/src/styles/global.css',
-  '/src/styles/program.css',
-  '/src/styles/thinking.css'
+  // 使用正确的相对路径
+  '/assets/styles/global.css'
 ];
 
 // 安装 Service Worker
@@ -20,7 +16,21 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('缓存已打开');
-        return cache.addAll(urlsToCache);
+        // 单独缓存每个资源，避免一个失败导致全部失败
+        return Promise.all(
+          urlsToCache.map(url => {
+            return fetch(url)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`缓存失败: ${url}`);
+                }
+                return cache.put(url, response);
+              })
+              .catch(error => {
+                console.error(`无法缓存 ${url}:`, error);
+              });
+          })
+        );
       })
       .then(() => self.skipWaiting()) // 强制新 SW 激活
   );
@@ -79,11 +89,11 @@ self.addEventListener('fetch', event => {
               });
             
             return response;
+          })
+          .catch(error => {
+            console.error('获取资源失败:', error);
+            // 可以在这里返回一个离线页面
           });
-      })
-      .catch(error => {
-        console.error('获取资源失败:', error);
-        // 可以在这里返回一个离线页面
       })
   );
 });
