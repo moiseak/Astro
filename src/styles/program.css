@@ -43,10 +43,13 @@
 }
 
 .folder-name:hover {
-  background-color: rgba(0, 0, 0, 0.05);
   background: #e5e7eb;
   color: #1e40af;
   transform: translateX(4px);
+}
+
+.folder.open > .folder-name::before {
+  content: "📂";
 }
 
 .folder-content {
@@ -54,16 +57,11 @@
   display: none;
   border-left: 2px solid #e5e7eb;
   padding-left: 1rem;
-  margin-left: 1rem;
 }
 
 .folder.open > .folder-content {
   display: block;
   animation: slideDown 0.2s ease-out;
-}
-
-.folder.open > .folder-name::before {
-  content: "📂";
 }
 
 .file {
