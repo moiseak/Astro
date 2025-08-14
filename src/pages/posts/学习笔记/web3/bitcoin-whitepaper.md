@@ -4,12 +4,12 @@ layout: /src/layouts/MarkdownPostLayout.astro
 description: 个人对Bitcoin-Whitepaper的一些理解
 pubDate: 2025-08-14
 ---
-## 简介
+# 简介
 在互联网贸易中，双方都需要一个**值得信任**的第三方机构来处理支付，并且完全不可撤销的交易是不存在的（为了解决无法避免的欺诈问题），卖家和买家都互相警惕且要为此付出额外的代价。
 
 比特币的诞生就是为了处理这个问题，我们需要一个基于密码学原理而非信任的电子支付系统，使得双方都能在无信任且无第三方机构的情况下直接进行交易，同时也避免了中心化的第三方机构从中抽成以及该机构权力过大所带来的各种风险，如银行封号，冻结账户等。并且该系统的交易也无法撤销，这将保护卖家不被欺诈，而买家则通过程序化合约保护。
 
-## 交易
+# 交易
 > "We define an electronic coin as a chain of digital signatures. Each owner transfers the coin to the next by digitally signing a hash of the previous transaction and the public key of the next owner and adding these to the end of the coin. A payee can verify the signatures to verify the chain of ownership."
 
 > “ 我们将一枚电子货币定义为一条数字签名链。每个拥有者都通过将上一次交易和下一个拥有者的公钥的哈希值的数字签名添加到此货币末尾的方式将这枚货币转移给下一个拥有者。收款人可以通过验证数字签名来证实其为该链的所有者。“
@@ -23,4 +23,4 @@ pubDate: 2025-08-14
 
 这个交易的问题是无法判断卖家有没有双重支付，即把一枚货币卖给两个人。我们需要一种能让收款人知道卖方有没有对更早的一笔交易签名的方法，那么在不引入第三方信任机构来鉴定哪笔交易是更先到达的前提下，所有交易就必须公开，由该支付系统所有参与者来共同监督，每笔交易都需要被多数节点认同此次交易是卖家最早的一次签名才算成功完成。
 
-## 待续
+# 待续
