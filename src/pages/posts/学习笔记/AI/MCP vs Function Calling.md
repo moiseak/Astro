@@ -4,10 +4,8 @@ title: MCP vs Function Calling
 description: MCP vs Function Calling
 pubDate: 2025-05-01
 ---
-自从大语言模型（LLM）横空出世以来，如何将 LLM 与现有商业系统有效结合、让其真正赋能各类业务，已成为当前最热门的研究方向之一。
 
-Function Calling 和 Model Context Protocol（模型上下文协议，MCP）是实现这种让 LLM 与外部系统进行交互的两种关键技术概念。然而二者在概念上有所重叠，很多人并不能讲出两种概念的区别与联系。
-
+Function Calling 和 Model Context Protocol（模型上下文协议，MCP）是实现让 LLM 与外部系统进行交互的两种关键技术概念。
 ## Function Calling
 
 外部系统通常会以函数（function）的形式进行封装，LLM 通过函数调用（function calling）可以实现与外部系统的交互。
