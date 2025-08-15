@@ -1,7 +1,7 @@
 ---
 title: Bitcoin-Whitepaper阅读笔记
 layout: /src/layouts/MarkdownPostLayout.astro
-description: 个人对Bitcoin-Whitepaper的一些理解
+description: 个人对 Bitcoin-Whitepaper 的一些理解
 pubDate: 2025-08-14
 ---
 ## 简介

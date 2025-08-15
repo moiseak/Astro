@@ -1,0 +1,214 @@
+
+
+.markdown-content {
+    flex: 0 0 800px;
+    /* 固定宽度，不伸缩 */
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    padding: 0;
+    margin: 0;
+}
+
+
+/* 响应式适配 */
+@media (max-width: 1199px) {
+
+    /* 当内容+目录总宽度超过屏幕时，转为紧凑布局 */
+    .markdown-container {
+        gap: 1.5rem;
+    }
+
+    .markdown-content {
+        flex: 1;
+        /* 内容区可伸缩 */
+        max-width: 800px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 小屏幕堆叠显示 */
+    .markdown-container {
+        flex-direction: column;
+    }
+
+}
+
+/* 标题样式 */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #222;
+}
+
+.markdown-content h1 {
+    font-size: 2rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+.markdown-content h2 {
+    font-size: 1.6rem;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.3rem;
+}
+
+.markdown-content h3 {
+    font-size: 1.3rem;
+}
+
+/* 段落样式 */
+.markdown-content p {
+    margin-bottom: 1.5rem;
+}
+
+/* 链接样式 */
+.markdown-content a {
+    color: #2563eb;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.markdown-content a:hover {
+    color: #1d4ed8;
+    background-color: #eff6ff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* 列表样式 */
+.markdown-content ul,
+.markdown-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.markdown-content ul {
+    list-style-type: disc;
+}
+
+.markdown-content ol {
+    list-style-type: decimal;
+}
+
+.markdown-content li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.markdown-content li p {
+    margin-bottom: 0.5rem;
+}
+
+/* 代码块样式 */
+.markdown-content pre {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.markdown-content code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.95rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    background-color: #f1f5f9;
+    color: #dc2626;
+}
+
+.markdown-content pre code {
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+}
+
+/* 引用样式 */
+.markdown-content blockquote {
+    border-left: 4px solid #bfdbfe;
+    padding: 0.5rem 1rem;
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+    background-color: #eff6ff;
+    color: #3b82f6;
+    border-radius: 0 4px 4px 0;
+}
+
+/* 图片样式 */
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* 表格样式 */
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.markdown-content th,
+.markdown-content td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.markdown-content th {
+    background-color: #f8fafc;
+    font-weight: 600;
+}
+
+.markdown-content tr:hover {
+    background-color: #f8fafc;
+}
+
+
+
+
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+    .markdown-content {
+        padding: 1.5rem 1rem;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .markdown-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .markdown-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .markdown-content h3 {
+        font-size: 1.2rem;
+    }
+
+    .markdown-content pre {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+}

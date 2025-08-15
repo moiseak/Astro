@@ -9,9 +9,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/preact": "^4.0.6",
-    "@astrojs/rss": "^4.0.11",
-    "astro": "^5.5.3",
+    "@astrojs/preact": "^4.1.0",
+    "@astrojs/rss": "^4.0.12",
+    "astro": "^5.13.0",
     "preact": "^10.26.4",
     "shiki": "^3.2.1",
     "shiki-languages": "^0.2.7"

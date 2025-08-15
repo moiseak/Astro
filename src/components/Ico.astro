@@ -1,0 +1,60 @@
+<!-- 放在页面的<body>标签内，最好是所有内容的最上方 -->
+<header class="site-header">
+  <!-- 花体zephyr logo -->
+  <a href="/" class="logo-link" aria-label="返回主页">
+    <span class="zephyr-script">zephyr</span>
+  </a>
+</header>
+
+<style>
+  .site-header {
+    position: fixed; /* 固定在页面左上角，不随滚动移动 */
+    top: 0;
+    left: 2rem;
+    width: 5rem;
+    padding: 1rem 2rem;
+    z-index: 1000; /* 确保在其他内容上方 */
+    box-sizing: border-box;
+  }
+
+  .logo-link {
+    text-decoration: none; /* 去除链接下划线 */
+  }
+
+  .zephyr-script {
+    font-family: "Brush Script MT", cursive; /* 花体字体 */
+    font-size: 4.5rem; /* 花体字大小 */
+    color: #2563eb; /* 字体颜色，可根据主题调整 */
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease; /* 悬停动画效果 */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* 轻微阴影增强质感 */
+  }
+
+  /* 悬停效果 */
+  .zephyr-script:hover {
+    color: #1d4ed8; /* 颜色加深 */
+    transform: scale(1.05); /* 轻微放大 */
+  }
+
+  /* 为页面内容添加顶部间距，避免被固定定位的header遮挡 */
+  body {
+    padding-top: 6rem;
+  }
+
+  /* 响应式调整 - 在小屏幕上缩小字体 */
+  @media (max-width: 640px) {
+    .zephyr-script {
+      font-size: 2rem;
+    }
+
+    .site-header {
+      padding: 0.8rem 1rem;
+    }
+
+    body {
+      padding-top: 5rem;
+    }
+  }
+</style>
+

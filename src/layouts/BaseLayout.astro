@@ -1,44 +1,23 @@
 ---
 import Header from "../components/Header.astro";
+import Ico from "../components/Ico.astro";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-
 const { pageTitle } = Astro.props;
 ---
+
 <html lang="zh-CN">
   <head>
-    <meta name="description" content="My homepage includes navigation bar, personal introduction, and friend links.">
+    <ClientRouter />
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
-
-    <!-- 内联关键 CSS -->
-    <style>
-      /* 这里放置首屏渲染必需的最小 CSS */
-      body {
-        margin: 0 auto;
-        width: 100%;
-        max-width: 85ch;
-        padding: 1rem;
-        line-height: 1.5;
-      }
-      
-      /* 导航基本样式 */
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-      }
-    </style>
-    
-    <!-- 正确加载 CSS，使用相对路径 -->
-    <link rel="stylesheet" href="/src/styles/global.css">
   </head>
   <body>
+    <Ico />
     <Header />
-    <main>
-      <slot />
-    </main>
+    <slot />
   </body>
 </html>
-
-

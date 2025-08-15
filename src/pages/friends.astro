@@ -1,9 +1,10 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "友链";
 ---
 
-<BaseLayout pageTitle="友链">
+<BaseLayout pageTitle={pageTitle}>
   <ClientRouter />
   <div class="friends-list">
     <!-- 在这里添加你的友链列表 -->
@@ -39,7 +40,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     background: #fff;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .friend-items {
