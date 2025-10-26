@@ -1,0 +1,49 @@
+---
+// 组件逻辑（此处无需要处理的逻辑，直接写模板和样式）
+---
+
+<section class="about-section">
+  <h3 class="about-title">About</h3>
+  <div class="about-content">
+    <p>你好，我叫 Zephyrus。</p>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    display: flex;
+    flex-wrap: wrap; /* 小屏幕下自动换行 */
+    gap: 1.2rem; /* 左右栏间距 */
+    max-width: 3600px;
+    margin: 0 auto;
+    align-items: flex-start; /* 顶部对齐 */
+  }
+
+  .about-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    width: 120px; /* 左侧标题宽度，可调整 */
+    min-width: 120px; /* 保证小屏幕下不被压缩 */
+    color: #1a1a1a;
+  }
+
+  .about-content {
+    flex: 1; /* 右侧内容占剩余宽度 */
+    color: #4a4a4a;
+    font-size: 1rem;
+    line-height: 1;
+    padding-top: 0.6rem;
+  }
+
+  /* 响应式：小屏幕下垂直排列 */
+  @media (max-width: 768px) {
+    .about-section {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .about-title {
+      width: 100%;
+      min-width: auto;
+    }
+  }
+</style>

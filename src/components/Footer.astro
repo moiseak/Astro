@@ -1,0 +1,53 @@
+---
+// src/components/Footer.astro
+---
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <!-- 左侧版权与备案信息 -->
+    <div class="footer-text">
+      <p>© 2024 - 2025 Zephyrus | <a href="/">Home</a> | <a href="/friends">Friends</a></p>
+    </div>
+    <!-- 右侧图标链接 -->
+    <div class="footer-icons">
+      <a href="https://github.com/" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+        <img src="/public/github-mark.svg" alt="github.svg" width="30">
+      </a>
+      <a href="mailto:your-email@example.com" aria-label="Email" target="_blank" rel="noopener noreferrer">
+        <img src="/public/email.svg" alt="email.svg" width="30">
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid #eee;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+  }
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .footer-text p {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  .footer-icons {
+    display: flex;
+    gap: 1rem;
+  }
+  .footer-icons a {
+    color: #666;
+    transition: color 0.2s ease;
+  }
+  .footer-icons a:hover {
+    color: #000;
+  }
+
+</style>

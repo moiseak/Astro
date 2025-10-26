@@ -2,7 +2,7 @@
 layout: /src/layouts/MarkdownPostLayout.astro
 title: MCP vs Function Calling
 description: MCP vs Function Calling
-pubDate: 2025-05-01
+pubDate: 2025-04-01
 ---
 
 Function Calling 和 Model Context Protocol（模型上下文协议，MCP）是实现让 LLM 与外部系统进行交互的两种关键技术概念。

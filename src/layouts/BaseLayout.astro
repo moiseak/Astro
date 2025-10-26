@@ -1,8 +1,8 @@
 ---
-import Header from "../components/Header.astro";
-import Ico from "../components/Ico.astro";
+// import Header from "../components/Header.astro";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
+import Footer from "../components/Footer.astro";
 const { pageTitle } = Astro.props;
 ---
 
@@ -16,8 +16,8 @@ const { pageTitle } = Astro.props;
     <title>{pageTitle}</title>
   </head>
   <body>
-    <Ico />
-    <Header />
     <slot />
+    
+  <Footer />
   </body>
 </html>

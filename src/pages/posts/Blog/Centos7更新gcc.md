@@ -2,7 +2,7 @@
 layout: /src/layouts/MarkdownPostLayout.astro
 title: Centos7更新gcc到9
 description: Centos7停止维护后修改yum源，更新gcc
-pubDate: 2025-01-10
+pubDate: 2025-01-12
 ---
 Centos7已经与2024年6月30日停止维护，yum源也无法使用了。
 如果运行
