@@ -184,6 +184,14 @@
   border: 1px solid rgba(2, 6, 23, 0.04);
 }
 
+/* 让代码区的 Tab 显示为 4 个空格宽度 */
+.markdown-content pre,
+.markdown-content pre code,
+.markdown-content code {
+  tab-size: 4;
+  -moz-tab-size: 4; /* Firefox */
+}
+
 /* 可选：代码块左侧高亮条（轻微视觉引导）*/
 .markdown-content pre::before {
   content: "";

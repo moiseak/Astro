@@ -3,7 +3,6 @@ layout: /src/layouts/MarkdownPostLayout.astro
 title: "Record #8"
 description: Life
 pubDate: 2025-11-01
-type: weekly
 ---
 距离上次记录已经是七个月前了，真正去正视的时候才感到这个数字的惊心动魄。
 
